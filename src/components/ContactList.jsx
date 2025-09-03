@@ -1,4 +1,8 @@
+import useGlobalReducer from "../context/ContactContext";
+
 const ContactList = () => {
+  const { store, dispatch } = useGlobalReducer();
+
   return (
     <>
       <div className="containe">
@@ -25,15 +29,14 @@ const ContactList = () => {
 
                   <p className="text-start">
                     <i className="fa-solid fa-phone-flip me-3 "></i>
-                    ddsfsfdgg
                   </p>
 
                   <p className="text-start">
-                    <i className="fa-solid fa-location-dot  me-3 "></i>sdsd
+                    <i className="fa-solid fa-location-dot  me-3 "></i>
                   </p>
 
                   <p className="text-start">
-                    <i className="fa-solid fa-envelope  me-3"></i>sdsd
+                    <i className="fa-solid fa-envelope  me-3"></i>
                   </p>
                 </div>
               </div>
