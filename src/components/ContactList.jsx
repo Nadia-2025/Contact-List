@@ -1,7 +1,23 @@
+import { useEffect } from "react";
 import useGlobalReducer from "../context/ContactContext";
+import { getData } from "../services/api";
+import ContactCard from "./ContactCard";
 
 const ContactList = () => {
   const { store, dispatch } = useGlobalReducer();
+
+  useEffect(() => {
+    const fetchContacts = async () => {
+      const data = await getData();
+
+      if (!data.error) {
+        dispatch({ type: "GET_CONTACT", payload: data });
+      } else {
+        console.error("Error loading contacts:", data.error);
+      }
+    };
+    fetchContacts();
+  }, [dispatch]);
 
   return (
     <>
@@ -14,37 +30,15 @@ const ContactList = () => {
               </button>
             </div>
 
-            <div
-              className="list-container d-flex justify-content-between align-items-center
-            "
-            >
-              <div className="contact-details d-flex justify-content-start align-content-center">
-                <img
-                  src="https://www.shutterstock.com/image-photo/portrait-woman-studio-shot-260nw-2514456809.jpg"
-                  alt=""
-                  className="image"
-                />
-                <div className="contact ms-5 mt-5">
-                  <h5>Nadia Koukouss</h5>
-
-                  <p className="text-start">
-                    <i className="fa-solid fa-phone-flip me-3 "></i>
-                  </p>
-
-                  <p className="text-start">
-                    <i className="fa-solid fa-location-dot  me-3 "></i>
-                  </p>
-
-                  <p className="text-start">
-                    <i className="fa-solid fa-envelope  me-3"></i>
-                  </p>
-                </div>
+            {store.contacts.length == 0 ? (
+              <div className="mt-5">
+                <h3>Oooops!! No contacts in the agenda</h3>
               </div>
-              <div className="modification-buttons">
-                <i className="fa-solid fa-pencil me-5 fs-5"></i>
-                <i className="fa-regular fa-trash-can me-5 ms-5 fs-5"></i>
-              </div>
-            </div>
+            ) : (
+              store.contacts.map((contact) => (
+                <ContactCard key={contact.id} contact={contact}></ContactCard>
+              ))
+            )}
           </div>
         </div>
       </div>
