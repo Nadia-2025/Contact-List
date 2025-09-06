@@ -10,7 +10,7 @@ function App() {
         <Routes>
           <Route path="/" element={<AddContact></AddContact>}></Route>
           <Route
-            path="/agendas/personal-agenda/contacts"
+            path="/agendas/mi_agenda/contacts"
             element={<ContactList></ContactList>}
           ></Route>
         </Routes>

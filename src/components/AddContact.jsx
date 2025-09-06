@@ -1,6 +1,7 @@
-import { createAgenda, createData } from "../services/api";
+import { createData } from "../services/api";
 import useGlobalReducer from "../context/ContactContext";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const AddContact = () => {
   const { dispatch } = useGlobalReducer();
@@ -11,21 +12,6 @@ const AddContact = () => {
     address: "",
   });
 
-  const AGENDA_SLUG = "mi_agenda";
-
-  useEffect(() => {
-    const initAgenda = async () => {
-      const agenda = await createAgenda(AGENDA_SLUG);
-      if (!agenda.error) {
-        console.log("Agenda creada:", agenda);
-      } else {
-        console.error("Error creando agenda:", agenda.error);
-      }
-    };
-
-    initAgenda();
-  }, []);
-
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -34,7 +20,6 @@ const AddContact = () => {
     e.preventDefault();
 
     const createdContact = await createData(form);
-    console.log(createdContact);
 
     if (!createdContact.error) {
       dispatch({ type: "ADD_CONTACT", payload: createdContact });
@@ -125,6 +110,9 @@ const AddContact = () => {
                 Save
               </button>
             </form>
+            <Link to="/agendas/mi_agenda/contacts">
+              Or get back to contacts
+            </Link>
           </div>
         </div>
       </div>
