@@ -1,22 +1,8 @@
-import { updateData } from "../services/api";
-import useGlobalReducer from "../context/ContactContext";
+import { useNavigate } from "react-router-dom";
 
 const ContactCard = ({ contact }) => {
-  const { dispatch } = useGlobalReducer();
+  const navigate = useNavigate();
 
-  const handleUpdate = async () => {
-    const updatedContact = {
-      ...contact,
-      address: "jhdgdjhkjdhk",
-    };
-    const response = await updateData(contact.id, updatedContact);
-
-    if (!response.error) {
-      dispatch({ type: "UPDATE_CONTACT", payload: response });
-    } else {
-      console.error("Error loading contacts:", response.error);
-    }
-  };
   return (
     <>
       <div
@@ -51,8 +37,9 @@ const ContactCard = ({ contact }) => {
         <div className="modification-buttons">
           <i
             className="fa-solid fa-pencil me-5 fs-5"
-            onClick={handleUpdate}
+            onClick={() => navigate(`/edit/${contact.id}`)}
           ></i>
+
           <i className="fa-regular fa-trash-can me-5 ms-5 fs-5"></i>
         </div>
       </div>

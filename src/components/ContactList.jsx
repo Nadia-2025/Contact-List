@@ -2,11 +2,11 @@ import { useEffect } from "react";
 import useGlobalReducer from "../context/ContactContext";
 import { getData } from "../services/api";
 import ContactCard from "./ContactCard";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const ContactList = () => {
   const { store, dispatch } = useGlobalReducer();
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchContacts = async () => {
@@ -22,7 +22,7 @@ const ContactList = () => {
   }, [dispatch]);
 
   const handleOnclick = () => {
-    Navigate("/");
+    navigate("/");
   };
 
   return (

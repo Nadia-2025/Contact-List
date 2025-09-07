@@ -1,4 +1,4 @@
-export const AGENDA_SLUG = "mi_agenda";
+export const AGENDA_SLUG = "agenda_nadia";
 
 export const getData = async () => {
   const response = await fetch(

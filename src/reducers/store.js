@@ -28,5 +28,3 @@ export default function storeReducer(state, action) {
       return state;
   }
 }
-
-// dispatch({ type: "AGREGAR_CONTACTO", payload: newContact });

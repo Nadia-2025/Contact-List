@@ -1,16 +1,28 @@
-import { createData } from "../services/api";
+import { createData, updateData } from "../services/api";
 import useGlobalReducer from "../context/ContactContext";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const AddContact = () => {
-  const { dispatch } = useGlobalReducer();
+  const { dispatch, store } = useGlobalReducer();
+  const { id } = useParams();
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     name: "",
     phone: "",
     email: "",
     address: "",
   });
+
+  useEffect(() => {
+    if (id) {
+      const contactToEdit = store.contacts.find(
+        (contact) => contact.id === parseInt(id)
+      );
+      if (contactToEdit) setForm(contactToEdit);
+    }
+  }, [id, store.contacts]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -19,14 +31,15 @@ const AddContact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const createdContact = await createData(form);
-
-    if (!createdContact.error) {
-      dispatch({ type: "ADD_CONTACT", payload: createdContact });
-      setForm({ name: "", phone: "", email: "", address: "" });
+    let result;
+    if (id) {
+      result = await updateData(id, form);
+      dispatch({ type: "UPDATE_CONTACT", payload: result });
     } else {
-      console.error("Error creando contacto:", createdContact.error);
+      result = await createData(form);
+      dispatch({ type: "ADD_CONTACT", payload: result });
     }
+    navigate("/agendas/agenda_nadia/contacts");
   };
 
   return (
@@ -35,7 +48,7 @@ const AddContact = () => {
         <div className="row">
           <div className="col">
             <form onSubmit={handleSubmit}>
-              <h1>Contact List</h1>
+              <h1>{id ? "Edit Contact" : "Add Contact"}</h1>
               <div className=" mb-3 text-start">
                 <label htmlFor="fullname" className="form-label ">
                   Full Name
@@ -107,10 +120,10 @@ const AddContact = () => {
                 />
               </div>
               <button type="submit" className="btn btn-primary w-100">
-                Save
+                {id ? "Update" : "Save"}
               </button>
             </form>
-            <Link to="/agendas/mi_agenda/contacts">
+            <Link to="/agendas/agenda_nadia/contacts">
               Or get back to contacts
             </Link>
           </div>

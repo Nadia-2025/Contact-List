@@ -10,9 +10,10 @@ function App() {
         <Routes>
           <Route path="/" element={<AddContact></AddContact>}></Route>
           <Route
-            path="/agendas/mi_agenda/contacts"
+            path="/agendas/agenda_nadia/contacts"
             element={<ContactList></ContactList>}
           ></Route>
+          <Route path="/edit/:id" element={<AddContact></AddContact>}></Route>
         </Routes>
       </BrowserRouter>
     </>
