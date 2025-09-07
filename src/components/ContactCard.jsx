@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-const ContactCard = ({ contact }) => {
+const ContactCard = ({ contact, onDelete }) => {
   const navigate = useNavigate();
 
   return (
@@ -40,7 +40,10 @@ const ContactCard = ({ contact }) => {
             onClick={() => navigate(`/edit/${contact.id}`)}
           ></i>
 
-          <i className="fa-regular fa-trash-can me-5 ms-5 fs-5"></i>
+          <i
+            className="fa-regular fa-trash-can me-5 ms-5 fs-5"
+            onClick={onDelete}
+          ></i>
         </div>
       </div>
     </>

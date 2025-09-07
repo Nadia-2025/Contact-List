@@ -1,0 +1,17 @@
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1050; /* igual que Bootstrap modal*/
+}
+.modal-dialog {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  min-width: 300px;
+  max-width: 500px;
+  z-index: 1060;
+}

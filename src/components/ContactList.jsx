@@ -1,12 +1,17 @@
 import { useEffect } from "react";
 import useGlobalReducer from "../context/ContactContext";
-import { getData } from "../services/api";
+import { getData, deleteData } from "../services/api";
 import ContactCard from "./ContactCard";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import Modal from "./Modal";
 
 const ContactList = () => {
   const { store, dispatch } = useGlobalReducer();
   const navigate = useNavigate();
+
+  const [showModal, setShowModal] = useState(false);
+  const [contactToDelete, setContactToDelete] = useState(null);
 
   useEffect(() => {
     const fetchContacts = async () => {
@@ -21,12 +26,39 @@ const ContactList = () => {
     fetchContacts();
   }, [dispatch]);
 
+  const handleOpenModal = (contact) => {
+    setContactToDelete(contact);
+    setShowModal(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!contactToDelete) return;
+    const deleted = await deleteData(contactToDelete.id);
+    if (!deleted.error) {
+      dispatch({ type: "DELETE_CONTACT", payload: contactToDelete.id });
+    }
+    setShowModal(false);
+    setContactToDelete(null);
+  };
+
+  const handleCancelDelete = () => {
+    setShowModal(false);
+    setContactToDelete(null);
+  };
+
   const handleOnclick = () => {
     navigate("/");
   };
 
   return (
     <>
+      {showModal && (
+        <Modal
+          show={showModal}
+          onConfirm={handleConfirmDelete}
+          onCancel={handleCancelDelete}
+        ></Modal>
+      )}
       <div className="containe">
         <div className="row">
           <div className="col">
@@ -47,7 +79,11 @@ const ContactList = () => {
             ) : (
               Array.isArray(store.contacts) &&
               store.contacts.map((contact) => (
-                <ContactCard key={contact.id} contact={contact}></ContactCard>
+                <ContactCard
+                  key={contact.id}
+                  contact={contact}
+                  onDelete={() => handleOpenModal(contact)}
+                ></ContactCard>
               ))
             )}
           </div>

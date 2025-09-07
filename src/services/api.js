@@ -59,21 +59,28 @@ export const updateData = async (id, contact) => {
   }
 };
 
-// export const deleteData = async () => {
-//   const response = await fetch(
-//     `https://playground.4geeks.com/contact/agendas/${AGENDA_SLUG}/contacts`,
-//     {
-//       method: "DELETE",
-//     }
-//   );
-//   if (response.ok) {
-//     const data = await response.json();
-//     return data;
-//   } else {
-//     console.log("error: ", response.status, response.statusText);
+export const deleteData = async (id) => {
+  const response = await fetch(
+    `https://playground.4geeks.com/contact/agendas/${AGENDA_SLUG}/contacts/${id}`,
+    {
+      method: "DELETE",
+      headers: {
+        accept: "application/json",
+      },
+    }
+  );
+  if (response.ok) {
+    if (response.status !== 204) {
+      const data = await response.json();
+      return data;
+    } else {
+      return { success: true };
+    }
+  } else {
+    console.log("error: ", response.status, response.statusText);
 
-//     return {
-//       error: { status: response.status, statusText: response.statusText },
-//     };
-//   }
-// };
+    return {
+      error: { status: response.status, statusText: response.statusText },
+    };
+  }
+};
